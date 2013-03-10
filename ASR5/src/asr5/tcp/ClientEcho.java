@@ -10,6 +10,12 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * 
+ * @author charlerlin
+ *
+ */
+
 public class ClientEcho {
 
 	Socket socket;

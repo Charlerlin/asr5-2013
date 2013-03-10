@@ -7,6 +7,12 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * 
+ * @author charlerlin
+ *
+ */
+
 public class ClientChargen {
 	
 	private Socket socket;

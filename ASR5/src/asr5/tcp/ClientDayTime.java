@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.net.UnknownHostException;
 
 /**
@@ -21,14 +20,14 @@ public class ClientDayTime {
 	private BufferedReader bf;
 	
 	public ClientDayTime() throws UnknownHostException, IOException{
-		socket = new Socket(InetAddress.getByName("localhost"), 13);
+		socket = new Socket(InetAddress.getByName("localhost"), ServeurDaytime.SERVICE);
 		isr = new InputStreamReader(socket.getInputStream());
 		bf = new BufferedReader(isr);
 	}
 
 	@Override
 	public String toString() {
-		String ret = "";
+		String ret = "echec";
 		try {
 			ret=  bf.readLine();
 		} catch (IOException e) {
