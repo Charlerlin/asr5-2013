@@ -1,11 +1,10 @@
 package asr5.tcp;
 
 import java.io.BufferedReader;
-import java.io.Console;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -17,16 +16,40 @@ import java.net.UnknownHostException;
  */
 
 public class ClientEcho {
+	protected static final int SERVICE = 7;
+	private Socket socket;
+	private BufferedReader inSrv, inUser;
+	private PrintWriter outSrv;
 
-	Socket socket;
-	BufferedReader inBF;
-	OutputStreamWriter oSR;
-	Console c;
-	
 	public ClientEcho() throws UnknownHostException, IOException{
-		socket = new Socket(InetAddress.getByName("localhost"), 7);
-		inBF = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		oSR = new OutputStreamWriter(socket.getOutputStream()); 
+		socket = new Socket(InetAddress.getByName("localhost"), SERVICE);
+		inSrv = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		outSrv = new PrintWriter(socket.getOutputStream()); 
+		inUser = new BufferedReader(new InputStreamReader(System.in));
 	}
-	
+
+	public static void main(String[] args) throws UnknownHostException, IOException {
+		new ClientEcho().start();
+	}
+
+	public void start(){
+		while(true){
+			String line = "";
+			try {
+				line = inUser.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if(line.equals(".") || line.toLowerCase().equals("fin")){
+				break;
+			}
+			outSrv.println(line);
+			try {
+				System.out.println("echo : "+inSrv.readLine());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 }
