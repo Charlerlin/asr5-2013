@@ -24,7 +24,7 @@ public class ClientEcho {
 	public ClientEcho() throws UnknownHostException, IOException{
 		socket = new Socket(InetAddress.getByName("localhost"), SERVICE);
 		inSrv = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		outSrv = new PrintWriter(socket.getOutputStream()); 
+		outSrv = new PrintWriter(socket.getOutputStream(), true); 
 		inUser = new BufferedReader(new InputStreamReader(System.in));
 	}
 
