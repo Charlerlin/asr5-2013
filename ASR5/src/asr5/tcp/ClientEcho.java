@@ -16,7 +16,7 @@ import java.net.UnknownHostException;
  */
 
 public class ClientEcho {
-	protected static final int SERVICE = 7;
+	protected static final int SERVICE = ServeurEcho.SERVICE;//7;
 	private Socket socket;
 	private BufferedReader inSrv, inUser;
 	private PrintWriter outSrv;

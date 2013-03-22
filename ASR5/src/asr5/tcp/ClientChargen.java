@@ -18,9 +18,10 @@ public class ClientChargen {
 	private Socket socket;
 	private BufferedReader bf;
 
+	protected static final int SERVICE = ServeurChargen.SERVICE;//9876;
 
 	public ClientChargen() throws UnknownHostException, IOException{
-		socket = new Socket(InetAddress.getByName("localhost"), 19);
+		socket = new Socket(InetAddress.getByName("localhost"), SERVICE);
 		bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	}
 
