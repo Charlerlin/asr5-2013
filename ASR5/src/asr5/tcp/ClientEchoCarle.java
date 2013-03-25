@@ -31,7 +31,7 @@ public class ClientEchoCarle {
 			// Ouverture socket, demande de connexion 
 			maSocket = new Socket (adrServ, portServ); // connexion au canal de réception 
 			in=new BufferedReader(new InputStreamReader(maSocket.getInputStream())); // connexion au canal d’écriture
-			out = new PrintWriter(maSocket.getOutputStream());
+			out = new PrintWriter(maSocket.getOutputStream(), true);
 
 			while(true){
 				//	saisie clavier

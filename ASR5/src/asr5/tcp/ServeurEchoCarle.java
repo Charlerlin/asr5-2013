@@ -40,7 +40,7 @@ public class ServeurEchoCarle {
 
 		// Connexion au flux en lecture 
 		in =new BufferedReader(new InputStreamReader(clientSocket.getInputStream()) ); // Connexion au flux en écriture
-		out = new PrintWriter(clientSocket.getOutputStream());
+		out = new PrintWriter(clientSocket.getOutputStream(), true);
 		// Ici, on renvoie ce que l’on reçoit
 		// ATTENTION : readLine est bloquant
 		while(true){

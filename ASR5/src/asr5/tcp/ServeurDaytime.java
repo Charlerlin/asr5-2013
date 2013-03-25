@@ -33,9 +33,9 @@ public class ServeurDaytime {
 		try {
 			out = new PrintWriter(client.getOutputStream(),true);
 			System.out.println("client connecté");
-			out.println(dateS); 
-//			out.println(new Date()); 
-			System.out.println(dateS+" date envoyée");
+//			out.println(dateS); 
+			out.println(new Date()); 
+//			System.out.println(dateS+" date envoyée");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
