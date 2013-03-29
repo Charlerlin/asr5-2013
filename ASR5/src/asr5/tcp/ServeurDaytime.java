@@ -14,19 +14,19 @@ import java.util.GregorianCalendar;
  */
 
 public class ServeurDaytime {
-	
+
 	private ServerSocket servSocket;
 	protected static final int SERVICE = 9876;
-	
+
 	public ServeurDaytime() throws IOException{
 		servSocket = new ServerSocket(SERVICE);
 	}
-	
-	public Socket start() throws IOException{
+
+	public Socket awaiting() throws IOException{
 		return servSocket.accept();
 	}
-	
-	public void doService(Socket client){
+
+	public void doService(Socket client) throws IOException{
 		PrintWriter out; 
 		GregorianCalendar date = new GregorianCalendar();
 		String dateS = date.get(GregorianCalendar.DAY_OF_MONTH)+" "+(date.get(GregorianCalendar.MONTH)+1)+" "+date.get(GregorianCalendar.YEAR)+", "+date.get(GregorianCalendar.HOUR_OF_DAY)+":"+date.get(GregorianCalendar.MINUTE);
@@ -38,7 +38,15 @@ public class ServeurDaytime {
 //			System.out.println(dateS+" date envoyée");
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
+		client.close();
+	}
+	
+	public void starten() throws IOException{
+		while(true){
+			Socket client = awaiting();
+			doService(client);
+		}
 	}
 
 	/**
@@ -46,9 +54,7 @@ public class ServeurDaytime {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		ServeurDaytime sdt = new ServeurDaytime();
-		Socket client = sdt.start();
-		sdt.doService(client);
+		new ServeurDaytime().starten();
 	}
 
 }

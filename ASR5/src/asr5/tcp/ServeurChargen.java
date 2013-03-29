@@ -14,31 +14,39 @@ import java.net.Socket;
 public class ServeurChargen {
 	private ServerSocket servSocket;
 	private PrintWriter out;
-	
+
 	protected static final int SERVICE = 9876;
-	
+
 	public ServeurChargen() throws IOException{
 		servSocket = new ServerSocket(SERVICE);
 	}
-	
-	public Socket start() throws IOException{
+
+	public Socket awaiting() throws IOException{
 		return servSocket.accept();
 	}
-	
+
 	public void doService(Socket client) throws IOException{
-		out = new PrintWriter(client.getOutputStream(), true);
-		while(true){
+		out = new PrintWriter(client.getOutputStream());
+		while(!client.isOutputShutdown()){
 			for(int i=33; i!=127; i++){
-				out.write(""+(char)i);
+				out.print((char)i);
 			}
-			out.write("\n");
+			out.flush();
+		}
+		out.flush();
+		client.close();
+	}
+	
+	public void starten() throws IOException{
+		while(true){
+			Socket client = awaiting();
+			System.out.println("client connecté");
+			doService(client);
+			System.err.println("sorti");
 		}
 	}
 	
 	public static void main(String[] args) throws IOException {
-		ServeurChargen sc = new ServeurChargen();
-		Socket client = sc.start();
-		System.out.println("client connecté");
-		sc.doService(client);
+		new ServeurChargen().starten();
 	}
 }

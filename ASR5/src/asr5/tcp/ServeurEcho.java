@@ -18,43 +18,60 @@ public class ServeurEcho {
 	private ServerSocket servSocket;
 	private BufferedReader in;
 	private PrintWriter out;
-	
+	private int nbClients; 
+
 	public ServeurEcho() throws IOException{
 		servSocket = new ServerSocket(SERVICE);
+		nbClients = 0;
 	}
-	
-	public Socket start() throws IOException{
+
+	public Socket awaiting() throws IOException{
 		return servSocket.accept();
 	}
-	
+
 	public void doService(Socket client) throws IOException{
+		nbClients++;
+		System.out.println("Client connecté, client n°"+nbClients);
 		in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 		out = new PrintWriter(client.getOutputStream(), true);
 		String line = "";
-		out.println("Bonjour <Nom du Sujet>");
+		out.println("Bonjour <Nom du Sujet>\nVous êtes le client n°"+nbClients);
 		while(true){
 			line = in.readLine();
-			System.out.println("Recu : "+line);
-			if(line.equals(".") || line.toLowerCase().equals("fin")){
+			if(line!=null){
+				System.out.println("Recu : "+line);
+				if(line.equals(".") || line.toLowerCase().equals("fin")){
+					System.out.println("Fin de connexion client");
+					out.println("Fin de connexion, au revoir");
+					break;
+				}
+				out.println(line);
+				System.out.println("Envoyé : "+line);
+			}
+			else{
 				System.out.println("Fin de connexion client");
 				out.println("Fin de connexion, au revoir");
 				break;
 			}
-			out.println(line);
-			System.out.println("Envoyé : "+line);
 		}
+		client.close();
 	}
 	
+	public void starten() throws IOException{
+		while(true){
+			System.out.println("En attente de connexion client");
+			Socket client = awaiting();
+			doService(client);
+		}
+	}
+
 
 	/**
 	 * @param args
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		ServeurEcho se = new ServeurEcho();
-		Socket client = se.start();
-		System.out.println("Client connecté");
-		se.doService(client);
+		new ServeurEcho().starten();
 	}
 
 }
