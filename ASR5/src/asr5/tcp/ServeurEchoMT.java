@@ -19,14 +19,18 @@ public class ServeurEchoMT{
 	private int nbClients;
 	private int nbConnected;
 
-	public ServeurEchoMT() throws IOException{
-		servSocket = new ServerSocket(SERVICE);
+	public ServeurEchoMT(){
+		try {
+			servSocket = new ServerSocket(SERVICE);
+		} catch (IOException e) {
+			System.err.println("Erreur à la création du ServerSocket");
+			System.exit(1); 
+		}
 		nbClients = 0;
 		nbConnected = 0;
 	}
 
-	private void awaiting() throws IOException{
-		Socket client;
+	private void awaiting(){
 		System.out.println("En attente de connexion client");
 		try {
 			new Thread(new ThreadAnswer(servSocket.accept())).start();
@@ -35,7 +39,7 @@ public class ServeurEchoMT{
 		}
 	}
 
-	public void starten() throws IOException{
+	public void starten(){
 		while(true){
 			awaiting();
 		}
@@ -56,11 +60,7 @@ public class ServeurEchoMT{
 		}
 		
 		public void run(){
-			try {
-				doService();
-			} catch (IOException e) {
-				System.err.println("Erreur à l'exécution du service");
-			}
+			doService();
 			try {
 				client.close();
 			} catch (IOException e) {
@@ -68,18 +68,30 @@ public class ServeurEchoMT{
 			}
 		}
 		
-		void doService() throws IOException{
-			System.out.println("Client connecté, client n°"+thisCli);
-			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			out = new PrintWriter(client.getOutputStream(), true);
+		void doService(){
+			System.out.println("Client n°"+thisCli+" connecté, depuis "+client.getInetAddress()+":"+client.getPort());
+			try {
+				in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			} catch (IOException e1) {
+				System.err.println("Erreur à la récupération du InputStream client ("+thisCli+")");
+			}
+			try {
+				out = new PrintWriter(client.getOutputStream(), true);
+			} catch (IOException e1) {
+				System.err.println("Erreur à la récupération du OutputStream client ("+thisCli+")");
+			}
 			String line = "";
 			out.println("Bonjour <Nom du Sujet>\nVous êtes le client n°"+thisCli+"\nIl y a "+nbConnected+" clients connectés");
 			while(true){
-				line = in.readLine();
+				try {
+					line = in.readLine();
+				} catch (IOException e) {
+					System.err.println("Erreur à la lecture du client ("+thisCli+")");
+				}
 				if(line!=null){
 					System.out.println("Recu ("+thisCli+") : "+line);
 					if(line.equals(".") || line.toLowerCase().equals("fin")){
-						System.out.println("Fin de connexion client");
+						System.out.println("Fin de connexion client ("+thisCli+")");
 						out.println("Fin de connexion, au revoir");
 						break;
 					}
@@ -87,12 +99,16 @@ public class ServeurEchoMT{
 					System.out.println("Envoyé ("+thisCli+") : "+line);
 				}
 				else{
-					System.out.println("Fin de connexion client "+thisCli);
+					System.out.println("Fin de connexion client"+thisCli);
 					out.println("Fin de connexion, au revoir");
 					break;
 				}
 			}
-			client.close();
+			try {
+				client.close();
+			} catch (IOException e) {
+				System.err.println("Erreur à la fermeture de la connexion client ("+thisCli+")");
+			}
 			--nbConnected;
 		}
 	}//fin de ThreadAnswer
@@ -102,7 +118,7 @@ public class ServeurEchoMT{
 	 * @param args
 	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args){
 		new ServeurEchoMT().starten();
 	}
 
