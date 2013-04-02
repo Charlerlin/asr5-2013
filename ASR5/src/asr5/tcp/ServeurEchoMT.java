@@ -28,10 +28,10 @@ public class ServeurEchoMT{
 		}
 		nbClients = 0;
 		nbConnected = 0;
+		System.out.println("Service lancé\nEn attente de connexion client");
 	}
 
 	private void awaiting(){
-		System.out.println("En attente de connexion client");
 		try {
 			new Thread(new ThreadAnswer(servSocket.accept())).start();
 		} catch (Exception e) {
