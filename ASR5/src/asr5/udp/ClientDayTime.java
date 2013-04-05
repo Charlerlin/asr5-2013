@@ -7,9 +7,9 @@ import java.net.InetSocketAddress;
 import java.net.SocketException;
 
 public class ClientDayTime {
-	DatagramSocket socket;
-	DatagramPacket packet;
-	byte[] buf;
+	protected DatagramSocket socket;
+	protected DatagramPacket packet;
+	protected byte[] buf;
 	
 	public ClientDayTime(){
 		try {

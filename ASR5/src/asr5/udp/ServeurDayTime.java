@@ -23,7 +23,7 @@ public class ServeurDayTime {
 		} catch (SocketException e) {
 			System.err.println("Fail creating socket");
 			System.err.println(e);
-			//e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
@@ -33,7 +33,6 @@ public class ServeurDayTime {
 		} catch (IOException e) {
 			System.err.println("Fail recieving packet");
 			System.err.println(e);
-			//e.printStackTrace();
 		}
 	}
 
@@ -45,20 +44,14 @@ public class ServeurDayTime {
 		} catch (IOException e) {
 			System.err.println("Fail sending packet");
 			System.err.println(e);
-			//e.printStackTrace();
 		}
 		System.out.println("Envoyé au client "+ ++nb);
-	}
-
-	public void closeClient(){
-		socket.close();
 	}
 
 	public void doService(){
 		while(true){
 			waitPacket();
 			sendPacket();
-			//closeClient();
 		}
 	}
 
