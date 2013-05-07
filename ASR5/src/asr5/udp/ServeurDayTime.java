@@ -12,7 +12,7 @@ public class ServeurDayTime {
 	protected byte[] buf;
 	protected int nb;
 
-	public static final int SERVICE = 9876;
+	public static final int SERVICE = 9878;
 
 	public ServeurDayTime() {
 		nb=0;

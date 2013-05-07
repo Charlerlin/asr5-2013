@@ -13,7 +13,7 @@ public class ServeurMul {
 	protected int mul;
 	protected String phrase;
 
-	public static int SERVICE = 9876;
+	public static int SERVICE = 9878;
 
 	public ServeurMul() {
 		bufR = new byte[100];
@@ -57,11 +57,11 @@ public class ServeurMul {
 
 	public void sendPacket(){
 		String ret = "";
-		for(int i=0; i!=mul; i++){
+		/*for(int i=0; i!=mul; i++){
 			ret += phrase;
-		}
+		}*/
 		bufS = ret.getBytes();
-		packet.setData(bufS, 0, bufS.length);
+		packet.setData(bufR, 0, bufR.length);
 		try {
 			socket.send(packet);
 		} catch (IOException e) {

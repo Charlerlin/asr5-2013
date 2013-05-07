@@ -29,6 +29,7 @@ public class ClientMul {
 			System.err.println("Fail creating or bounding packet");
 			e.printStackTrace();
 		}
+		System.out.println("Client prêt !");
 	}
 	
 	public String typePhrase(){
@@ -70,7 +71,7 @@ public class ClientMul {
 	public void doReceive(){
 		String phrase = typePhrase();
 		sendPacket(phrase);
-		doReceive();
+		receivePacket();
 	}
 
 	public static void main(String[] args) {
