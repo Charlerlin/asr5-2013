@@ -40,7 +40,7 @@ public class ClientCesar {
 	private File fIn, fOut;
 	private FileReader frIn;
 	private PrintWriter outSrv;
-	private FileWriter fW;
+	private PrintWriter fW;
 
 	// constructeur	
 	public ClientCesar(){
@@ -164,10 +164,10 @@ public class ClientCesar {
 		fOut = new File("EncodeCesar.txt");
 		String line;
 		try {
-			fW = new FileWriter(fOut);
+			fW = new PrintWriter(new FileWriter(fOut),true);
 			do{
 				line = inSrv.readLine();
-				fW.write(line);
+				fW.println(line);
 			}while(!line.isEmpty());
 		} catch (IOException e) {
 			System.err.println("Fail creating fileWriter");
@@ -193,6 +193,7 @@ public class ClientCesar {
 	public void doService(){
 		envoiPaqUDP();
 		ouvrirFluxTCP(attendClient());
+		lireFichier();
 		envoiF();
 		recevoirF();
 		fermerCo();
